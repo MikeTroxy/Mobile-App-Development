@@ -1,15 +1,21 @@
 import React, { Component } from "react";
-import { Text, TextInput, View, Button, Alert } from "react-native";
+import { Text, TextInput, View, Button, Alert, Touchable, TouchableOpacity } from "react-native";
+import styles from './Stylesheet.js';
 
 class App extends Component {
   render() {
     return (
       <View>
-        <Text>Welcome to WhatsThat!</Text>
-        <Button
-            title="Sign Up Now!!"
+        <Text style = {styles.text}>Welcome to WhatsThat!</Text>
+        <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Login')}
+            style = {styles.button}
+          ><Text style = {styles.text}>Login</Text></TouchableOpacity>
+
+        <TouchableOpacity
             onPress={() => this.props.navigation.navigate('SignUp')}
- />
+            style = {styles.button}
+          ><Text style = {styles.text}>Sign Up</Text></TouchableOpacity>
 
       </View>
     );
