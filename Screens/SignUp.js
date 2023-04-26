@@ -3,7 +3,7 @@ import { Text, TextInput, View, Button, Alert, Touchable } from 'react-native';
 import { TouchableOpacity } from 'react-native-web';
 import styles from './Stylesheet.js';
 
-class List extends Component {
+export default class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -99,5 +99,3 @@ class List extends Component {
     );
   }
 }
-
-export default List;

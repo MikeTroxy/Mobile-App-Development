@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, TextInput, View, Button, Alert, Touchable, TouchableOpacity } from "react-native";
 import styles from './Stylesheet.js';
 
-class App extends Component {
+export default class Homescreen extends Component {
   render() {
     return (
       <View>
@@ -22,4 +22,3 @@ class App extends Component {
   }
 }
 
-export default App;

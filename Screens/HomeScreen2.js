@@ -11,17 +11,18 @@ import {
 import styles from "./Stylesheet.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-class App extends Component {
-    //logout Method
+export default class Homescreen2 extends Component {
+  //logout Method
   async logout() {
     console.log("Logout");
     return fetch("http://localhost:3333/api/1.0.0/logout", {
       method: "POST",
-      headers: { 'Content-Type': 'application/json',
+      headers: {
+        "Content-Type": "application/json",
         "X-authorization": await AsyncStorage.getItem(
           "whatsthat_session_token"
-        )
-      }
+        ),
+      },
     })
       .then(async (response) => {
         if (response.status == 200) {
@@ -44,6 +45,36 @@ class App extends Component {
       });
   }
 
+  async Createchat() {
+    console.log("Create chat");
+    return fetch("http://localhost:3333/api/1.0.0/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-authorization": await AsyncStorage.getItem(
+          "whatsthat_session_token"
+        ),
+      },
+      body: JSON.stringify({
+        name: "OOF",
+      }),
+    })
+      .then(async (response) => {
+        if (response.status == 200) {
+          console.log("OK");
+        } else if (response.status == 401) {
+          console.log("Unauthorized");
+        } else {
+          throw "something went wrong";
+        }
+      })
+
+      .catch((error) => {
+        this.setState({ error: error });
+        this.setState({ submitted: false });
+      });
+  }
+
   render() {
     return (
       <View>
@@ -53,28 +84,38 @@ class App extends Component {
         </TouchableOpacity>
 
         <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Profile')}
-            style = {styles.button}
-          >
+          onPress={() => this.props.navigation.navigate("Profile")}
+          style={styles.button}
+        >
           <Text style={styles.text}>Profile</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Search')}
-            style = {styles.button}
-          >
+          onPress={() => this.props.navigation.navigate("Search")}
+          style={styles.button}
+        >
           <Text style={styles.text}>Add Users</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Contacts')}
-            style = {styles.button}
-          >
+          onPress={() => this.props.navigation.navigate("Contacts")}
+          style={styles.button}
+        >
           <Text style={styles.text}>Contacts</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("Chats")}
+          style={styles.button}
+        >
+          <Text style={styles.text}>Chats</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => this.Createchat()}
+          style={styles.button}
+        >
+          <Text style={styles.text}>Create chat</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
-
-export default App;
