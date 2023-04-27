@@ -87,33 +87,6 @@ export default class Search extends Component {
       });
   }
 
-  deleteContact = async (ID) => {
-    console.log("Delete Contact");
-    return fetch("http://localhost:3333/api/1.0.0/user/" + ID + "/contact", {
-      method: "DELETE",
-      headers: { 'Content-Type': 'application/json',
-        "X-authorization": await AsyncStorage.getItem(
-          "whatsthat_session_token"
-        )
-      }
-    })
-      .then(async (response) => {
-        if (response.status == 200) {
-          
-            console.log("OK")
-        } else if (response.status == 401) {
-          console.log("Unauthorized");
-        } else {
-          throw "something went wrong";
-        }
-      })
-
-      .catch((error) => {
-        this.setState({ error: error });
-        this.setState({ submitted: false });
-      });
-  }
-
   blockContact = async (ID) => {
     console.log("block Contact");
     return fetch("http://localhost:3333/api/1.0.0/user/" + ID + "/block", {
@@ -185,12 +158,6 @@ export default class Search extends Component {
                   style = {styles.button}
                   >
                     <Text>Add Contact</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                  onPress={() => {this.deleteContact(item.user_id)}}
-                  style = {styles.button}
-                  >
-                    <Text>Remove Contact</Text>
                   </TouchableOpacity>
                   <TouchableOpacity 
                   onPress={() => {this.blockContact(item.user_id)}}

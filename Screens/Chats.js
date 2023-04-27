@@ -78,6 +78,36 @@ export default class Chats extends Component {
       });
   };
 
+  Updatechat = async (ID) => {
+    console.log("Update Chat");
+    return fetch("http://localhost:3333/api/1.0.0/chat/" + ID, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "X-authorization": await AsyncStorage.getItem(
+          "whatsthat_session_token"
+        ),
+      },
+      body: JSON.stringify({
+        name: "OOF",
+      }),
+    })
+      .then(async (response) => {
+        if (response.status == 200) {
+          console.log("OK");
+        } else if (response.status == 401) {
+          console.log("Unauthorized");
+        } else {
+          throw "something went wrong";
+        }
+      })
+
+      .catch((error) => {
+        this.setState({ error: error });
+        this.setState({ submitted: false });
+      });
+  };
+
   componentDidMount() {
     this.getchatData();
   }
@@ -93,7 +123,11 @@ export default class Chats extends Component {
               <View>
                 <Text>{item.name}</Text>
                 <TouchableOpacity
-                  onPress={() => {this.props.navigation.navigate('Conversation', {data: item.chat_id})}}
+                  onPress={() => {
+                    this.props.navigation.navigate("Conversation", {
+                      data: item.chat_id,
+                    });
+                  }}
                   style={styles.button}
                 >
                   <Text>Go to chat</Text>
