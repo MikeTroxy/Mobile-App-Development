@@ -113,31 +113,35 @@ export default class Chats extends Component {
   }
 
   render() {
-    return (
-      <View>
-        <Text style={styles.text}>Chats</Text>
-        <FlatList
-          data={this.state.chat_data}
-          renderItem={({ item }) => {
-            return (
-              <View>
-                <Text>{item.name}</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.navigation.navigate("Conversation", {
-                      data: item.chat_id,
-                    });
-                  }}
-                  style={styles.button}
-                >
-                  <Text>Go to chat</Text>
-                </TouchableOpacity>
-              </View>
-            );
-          }}
-          keyExtractor={(item) => item.chat_id}
-        />
-      </View>
-    );
+    if (this.state.loading) {
+      return <Text style={styles.text}>Loading, please wait...</Text>;
+    } else {
+      return (
+        <View>
+          <Text style={styles.text}>Chats</Text>
+          <FlatList
+            data={this.state.chat_data}
+            renderItem={({ item }) => {
+              return (
+                <View>
+                  <Text>{item.name}</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.props.navigation.navigate("Conversation", {
+                        data: item.chat_id,
+                      });
+                    }}
+                    style={styles.button}
+                  >
+                    <Text>Go to chat</Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+            keyExtractor={(item) => item.chat_id}
+          />
+        </View>
+      );
+    }
   }
 }

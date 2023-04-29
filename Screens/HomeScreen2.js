@@ -56,7 +56,7 @@ export default class Homescreen2 extends Component {
         ),
       },
       body: JSON.stringify({
-        name: "OOF",
+        name: "testtest",
       }),
     })
       .then(async (response) => {
@@ -110,7 +110,7 @@ export default class Homescreen2 extends Component {
           <Text style={styles.text}>Chats</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => this.Createchat()}
+          onPress={() => this.props.navigation.navigate("Createconversation")}
           style={styles.button}
         >
           <Text style={styles.text}>Create chat</Text>

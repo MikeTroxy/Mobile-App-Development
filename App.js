@@ -10,6 +10,9 @@ import Search from './Screens/Search.js';
 import Blocked from "./Screens/Blocked.js";
 import Chats from "./Screens/Chats.js"
 import Conversation from "./Screens/Conversation.js"
+import Createconversation from "./Screens/Createconversation.js"
+import Adduser from "./Screens/Adduser.js"
+import Removeuser from "./Screens/Removeuser.js"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
@@ -29,6 +32,9 @@ export default function App(){
                 <Stack.Screen name= "Search" component={Search}/>
                 <Stack.Screen name= "Chats" component={Chats}/>
                 <Stack.Screen name= "Conversation" component={Conversation}/>
+                <Stack.Screen name= "Createconversation" component={Createconversation}/>
+                <Stack.Screen name= "Adduser" component={Adduser}/>
+                <Stack.Screen name= "Removeuser" component={Removeuser}/>
              </Stack.Navigator>
         </NavigationContainer>
     );

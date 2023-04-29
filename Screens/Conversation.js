@@ -21,7 +21,7 @@ export default class Conversation extends Component {
     };
   }
 
-  async getData() {
+  async getChatData() {
     console.log(this.state.chat_id);
     return fetch("http://localhost:3333/api/1.0.0/chat/" + this.state.chat_id, {
       headers: {
@@ -89,9 +89,14 @@ export default class Conversation extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      chat_id: this.props.route.params.data.toString()
-    },()=>{this.getData();});
+    this.setState(
+      {
+        chat_id: this.props.route.params.data.toString(),
+      },
+      () => {
+        this.getChatData();
+      }
+    );
   }
 
   render() {
@@ -101,6 +106,18 @@ export default class Conversation extends Component {
       return (
         <View>
           <Text style={styles.text}>{this.state.chat_data.name}</Text>
+          <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("Adduser", {data: this.state.chat_id})}
+          style={styles.button}
+          >      
+          <Text style={styles.text}>Add User</Text>
+        </TouchableOpacity>
+          <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("Removeuser", {data: this.state.chat_id})}
+          style={styles.button}
+          >      
+          <Text style={styles.text}>Remove User</Text>
+        </TouchableOpacity>
         </View>
       );
     }
