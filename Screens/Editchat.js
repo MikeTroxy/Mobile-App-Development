@@ -10,15 +10,13 @@ import {
 } from "react-native";
 import styles from "./Stylesheet.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FlatList } from "react-native-web";
 
-export default class Conversation extends Component {
+export default class Editchat extends Component {
   constructor(props) {
     super(props);
     this.state = {
       chat_id: "",
       chat_data: [],
-      message: "",
       loading: true,
     };
   }
@@ -57,56 +55,23 @@ export default class Conversation extends Component {
       });
   }
 
-  UpdateChat = async (ID) => {
-    console.log("Chat Updated");
-    return fetch("http://localhost:3333/api/1.0.0/chat/" + ID, {
+  async Updatechat() {
+    console.log(this.state.chat_id);
+    return fetch("http://localhost:3333/api/1.0.0/chat/" + this.state.chat_id, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
-        "X-authorization": await AsyncStorage.getItem(
+        "X-Authorization": await AsyncStorage.getItem(
           "whatsthat_session_token"
         ),
+        "Content-type": "application/json",
       },
+      body: JSON.stringify({ "name": this.state.name }),
     })
-      .then(async (response) => {
-        if (response.status == 200) {
-          console.log("OK");
-        } else if (response.status == 401) {
-          console.log("Unauthorized");
-        } else if (response.status == 403) {
-          console.log("Forbidden");
-        } else if (response.status == 404) {
-          console.log("Not Found");
-        } else if (response.status == 500) {
-          console.log("Server Error");
-        } else {
-          throw "something went wrong";
-        }
-      })
-
-      .catch((error) => {
-        this.setState({ error: error });
-        this.setState({ submitted: false });
-      });
-  };
-
-  async Sendmessage() {
-    return fetch(
-      "http://localhost:3333/api/1.0.0/chat/" + this.state.chat_id + "/message",
-      {
-        method: "POST",
-        headers: {
-          "X-Authorization": await AsyncStorage.getItem(
-            "whatsthat_session_token"
-          ),
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ message: this.state.message }),
-      }
-    )
       .then((response) => {
         if (response.status == 200) {
-          console.log("Message Sent");
+          console.log("Chat Name Updated Successfully");
+        } else {
+          throw "Something went wrong :(";
         }
       })
       .catch((err) => {
@@ -114,8 +79,8 @@ export default class Conversation extends Component {
       });
   }
 
-  handleMessage = (text) => {
-    this.setState({ message: text });
+  handleChatname = (text) => {
+    this.setState({ name: text });
   };
 
   componentDidMount() {
@@ -136,45 +101,52 @@ export default class Conversation extends Component {
       return (
         <View>
           <Text style={styles.text}>{this.state.chat_data.name}</Text>
-          <FlatList
-            extraData={this.state.chat_data.messages.reverse()}
-            data={this.state.chat_data.messages.reverse()}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <Text>
-                    {item.author.first_name}: {item.message}
-                  </Text>
-                </View>
-              );
-            }}
-            keyExtractor={(item) => item.chat_id}
-          />
+
           <TextInput
             placeholder="..."
-            onChangeText={this.handleMessage}
+            onChangeText={this.handleChatname}
             value={this.state.message}
             style={styles.text}
           />
 
           <TouchableOpacity
             onPress={() => {
-              this.Sendmessage();
+              this.Updatechat();
             }}
             style={styles.button}
           >
-            <Text style={styles.text}>Send Message</Text>
+            <Text style={styles.text}>Update Chat Name</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() =>
-              this.props.navigation.navigate("Editchat", {
+              this.props.navigation.navigate("Adduser", {
                 data: this.state.chat_id,
               })
             }
             style={styles.button}
           >
-            <Text style={styles.text}>Edit chat</Text>
+            <Text style={styles.text}>Add User</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate("Removeuser", {
+                data: this.state.chat_id,
+              })
+            }
+            style={styles.button}
+          >
+            <Text style={styles.text}>Remove User</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate("Chatinfo", {
+                data: this.state.chat_id,
+              })
+            }
+            style={styles.button}
+          >
+            <Text style={styles.text}>View Chat Info</Text>
           </TouchableOpacity>
         </View>
       );

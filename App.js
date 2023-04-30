@@ -13,6 +13,8 @@ import Conversation from "./Screens/Conversation.js"
 import Createconversation from "./Screens/Createconversation.js"
 import Adduser from "./Screens/Adduser.js"
 import Removeuser from "./Screens/Removeuser.js"
+import Chatinfo from "./Screens/Chatinfo.js"
+import Editchat from "./Screens/Editchat.js"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
@@ -35,6 +37,8 @@ export default function App(){
                 <Stack.Screen name= "Createconversation" component={Createconversation}/>
                 <Stack.Screen name= "Adduser" component={Adduser}/>
                 <Stack.Screen name= "Removeuser" component={Removeuser}/>
+                <Stack.Screen name= "Chatinfo" component={Chatinfo}/>
+                <Stack.Screen name= "Editchat" component={Editchat}/>
              </Stack.Navigator>
         </NavigationContainer>
     );
