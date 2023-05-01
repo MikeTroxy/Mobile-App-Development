@@ -114,6 +114,39 @@ export default class Conversation extends Component {
       });
   }
 
+  Deletemessage = async (MID) => {
+    console.log("Removed message from chat");
+    return fetch(
+      "http://localhost:3333/api/1.0.0/chat/" +
+        this.state.chat_id +
+        "/message/" +
+        MID,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "X-authorization": await AsyncStorage.getItem(
+            "whatsthat_session_token"
+          ),
+        },
+      }
+    )
+      .then(async (response) => {
+        if (response.status == 200) {
+          console.log("OK");
+        } else if (response.status == 401) {
+          console.log("Unauthorized");
+        } else {
+          throw "something went wrong";
+        }
+      })
+
+      .catch((error) => {
+        this.setState({ error: error });
+        this.setState({ submitted: false });
+      });
+  };
+
   handleMessage = (text) => {
     this.setState({ message: text });
   };
@@ -145,6 +178,24 @@ export default class Conversation extends Component {
                   <Text>
                     {item.author.first_name}: {item.message}
                   </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.Deletemessage(item.message_id);
+                    }}
+                  >
+                    <Text style={styles.text}>Remove</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate("Editmessage", {
+                        data: item.message_id,
+                        moredata: this.state.chat_id
+                      })
+                    }
+                    style={styles.button}
+                  >
+                    <Text style={styles.text}>Edit</Text>
+                  </TouchableOpacity>
                 </View>
               );
             }}

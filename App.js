@@ -15,6 +15,7 @@ import Adduser from "./Screens/Adduser.js"
 import Removeuser from "./Screens/Removeuser.js"
 import Chatinfo from "./Screens/Chatinfo.js"
 import Editchat from "./Screens/Editchat.js"
+import Editmessage from "./Screens/Editmessage.js"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
@@ -39,6 +40,7 @@ export default function App(){
                 <Stack.Screen name= "Removeuser" component={Removeuser}/>
                 <Stack.Screen name= "Chatinfo" component={Chatinfo}/>
                 <Stack.Screen name= "Editchat" component={Editchat}/>
+                <Stack.Screen name= "Editmessage" component={Editmessage}/>
              </Stack.Navigator>
         </NavigationContainer>
     );
