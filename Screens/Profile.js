@@ -49,7 +49,6 @@ export default class Profile extends Component {
     }else{
       return(
         <View>
-          <Text>Profile</Text>
           <Text style={styles.text}> First Name: {this.state.profile.first_name} </Text>
           <Text style={styles.text}> Last Name: {this.state.profile.last_name} </Text>
           <Text style={styles.text}> Email: {this.state.profile.email} </Text>

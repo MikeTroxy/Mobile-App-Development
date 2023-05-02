@@ -132,6 +132,7 @@ export default class Search extends Component {
     return (
       <View>
         <TextInput
+          style={styles.textinput}
           placeholder="Search"
           onSubmitEditing={() => {
             this.getData();
@@ -139,7 +140,7 @@ export default class Search extends Component {
           onChangeText={this.handleSearch}
           value={this.state.search}
         />
-        <Text>Your id is: {this.state.userid}</Text>
+        <Text style={styles.tittletext} >Your id is: {this.state.userid}</Text>
         <FlatList
           data={this.state.search_results}
           renderItem={({ item }) => {
@@ -148,11 +149,13 @@ export default class Search extends Component {
             }
             else{
               return(
-                <View>
-                  <Text>{item.given_name}</Text>
-                  <Text>{item.family_name}</Text>
-                  <Text>{item.email}</Text>
-                  <Text>{item.user_id}</Text>
+                <View
+                style={styles.messagestyle}
+                >
+                  <Text style={styles.infotext}>{item.given_name}</Text>
+                  <Text style={styles.infotext}>{item.family_name}</Text>
+                  <Text style={styles.infotext}>{item.email}</Text>
+                  <Text style={styles.infotext}>{item.user_id}</Text>
                   <TouchableOpacity 
                   onPress={() => {this.addContact(item.user_id)}}
                   style = {styles.button}

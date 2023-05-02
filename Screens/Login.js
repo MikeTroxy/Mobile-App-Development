@@ -11,7 +11,7 @@ export default class LoginScreen extends Component {
       email: "",
       password: "",
       emailtest: "miketroxy@gmail.com",
-      passwordtest: "Password1!",
+      passwordtest: "Mike123!",
     };
   }
 
@@ -74,6 +74,7 @@ export default class LoginScreen extends Component {
 
         <TextInput
           placeholder="password..."
+          secureTextEntry
           onChangeText={this.handlePasswordInput}
           value={this.state.password}
           style={styles.text}

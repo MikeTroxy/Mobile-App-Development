@@ -27,7 +27,7 @@ export default function App(){
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name= "Login" component={LoginScreen}/>
-                <Stack.Screen name= "HomeScreen2" component={HomeScreen2}/>
+                <Stack.Screen name= "HomeScreen2" component={HomeScreen2} options={{headerLeft: null}}/>
                 <Stack.Screen name= "Profile" component={Profile}/>
                 <Stack.Screen name= "Update" component={Update}/>
                 <Stack.Screen name= "Contacts" component={Contacts}/>

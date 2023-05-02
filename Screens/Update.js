@@ -74,30 +74,33 @@ export default class Update extends Component {
     render(){
         return (
             <View>
-                <Text>Update Profile Information</Text>
-                <Text>First Name</Text>
+                <Text style={styles.text}>First Name:</Text>
                 <TextInput
                     value={this.state.first_name}
                     onChangeText={(val) => this.setState({"first_name": val})}
+                    style={styles.textinput}
                 />
 
-                <Text>Last Name</Text>
+                <Text style={styles.text}>Last Name:</Text>
                 <TextInput
                     value={this.state.last_name}
                     onChangeText={(val) => this.setState({"last_name": val})}
+                    style={styles.textinput}
                 />
                 
-                <Text>Email</Text>
+                <Text style={styles.text}>Email:</Text>
                 <TextInput
                     value={this.state.email}
                     onChangeText={(val) => this.setState({"email": val})}
+                    style={styles.textinput}
                 />
 
-                <Text>Password</Text>
+                <Text style={styles.text}>Password:</Text>
                 <TextInput
                     value={this.state.password}
                     onChangeText={(val) => this.setState({"password": val})}
                     secureTextEntry
+                    style={styles.textinput}
                 />
 
                 <TouchableOpacity

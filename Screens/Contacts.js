@@ -112,16 +112,16 @@ export default class Contacts extends Component {
   render() {
     return (
       <View>
-        <Text>Contacts:</Text>
+        <Text style={styles.tittletext}>Contacts:</Text>
         <FlatList
           data={this.state.contacts}
           renderItem={({ item }) => {
             return (
               <View>
-                <Text>{item.first_name}</Text>
-                <Text>{item.last_name}</Text>
-                <Text>{item.email}</Text>
-                <Text>{item.user_id}</Text>
+                <Text style={styles.messagestyle}>{item.first_name}</Text>
+                <Text style={styles.messagestyle}>{item.last_name}</Text>
+                <Text style={styles.messagestyle}>{item.email}</Text>
+                <Text style={styles.messagestyle}>{item.user_id}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     this.deleteContact(item.user_id);

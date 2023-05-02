@@ -175,7 +175,7 @@ export default class Conversation extends Component {
             renderItem={({ item }) => {
               return (
                 <View>
-                  <Text>
+                  <Text style={ styles.messagestyle }>
                     {item.author.first_name}: {item.message}
                   </Text>
                   <TouchableOpacity
@@ -189,7 +189,7 @@ export default class Conversation extends Component {
                     onPress={() =>
                       this.props.navigation.navigate("Editmessage", {
                         data: item.message_id,
-                        moredata: this.state.chat_id
+                        moredata: this.state.chat_id,
                       })
                     }
                     style={styles.button}
@@ -205,14 +205,14 @@ export default class Conversation extends Component {
             placeholder="..."
             onChangeText={this.handleMessage}
             value={this.state.message}
-            style={styles.text}
+            style={styles.textinput}
           />
 
           <TouchableOpacity
             onPress={() => {
               this.Sendmessage();
             }}
-            style={styles.button}
+            style={styles.sendbutton}
           >
             <Text style={styles.text}>Send Message</Text>
           </TouchableOpacity>
