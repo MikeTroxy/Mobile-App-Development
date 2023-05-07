@@ -18,6 +18,7 @@ import Editchat from "./Screens/Editchat.js"
 import Editmessage from "./Screens/Editmessage.js"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Toast from "react-native-toast-notifications";
 const Stack = createNativeStackNavigator();
 
 export default function App(){
@@ -42,6 +43,7 @@ export default function App(){
                 <Stack.Screen name= "Editchat" component={Editchat}/>
                 <Stack.Screen name= "Editmessage" component={Editmessage}/>
              </Stack.Navigator>
+             <Toast ref={(ref) => global['toast'] = ref} />
         </NavigationContainer>
     );
 }

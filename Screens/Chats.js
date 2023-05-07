@@ -33,6 +33,12 @@ export default class Chats extends Component {
       .then((response) => {
         if (response.status == 200) {
           return response.json();
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
+          console.log("Unauthorized");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
         } else {
           throw "Something went wrong :(";
         }
@@ -50,63 +56,6 @@ export default class Chats extends Component {
       });
   }
 
-  Startchat = async (ID) => {
-    console.log("Add Contact");
-    return fetch("http://localhost:3333/api/1.0.0/user/" + ID + "/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-authorization": await AsyncStorage.getItem(
-          "whatsthat_session_token"
-        ),
-      },
-    })
-      .then(async (response) => {
-        if (response.status == 200) {
-          console.log("OK");
-        } else if (response.status == 401) {
-          console.log("Unauthorized");
-        } else {
-          throw "something went wrong";
-        }
-      })
-
-      .catch((error) => {
-        this.setState({ error: error });
-        this.setState({ submitted: false });
-      });
-  };
-
-  Updatechat = async (ID) => {
-    console.log("Update Chat");
-    return fetch("http://localhost:3333/api/1.0.0/chat/" + ID, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "X-authorization": await AsyncStorage.getItem(
-          "whatsthat_session_token"
-        ),
-      },
-      body: JSON.stringify({
-        name: "OOF",
-      }),
-    })
-      .then(async (response) => {
-        if (response.status == 200) {
-          console.log("OK");
-        } else if (response.status == 401) {
-          console.log("Unauthorized");
-        } else {
-          throw "something went wrong";
-        }
-      })
-
-      .catch((error) => {
-        this.setState({ error: error });
-        this.setState({ submitted: false });
-      });
-  };
-
   componentDidMount() {
     this.getchatData();
   }
@@ -123,7 +72,7 @@ export default class Chats extends Component {
             renderItem={({ item }) => {
               return (
                 <View>
-                  <Text>{item.name}</Text>
+                  
                   <TouchableOpacity
                     onPress={() => {
                       this.props.navigation.navigate("Conversation", {
@@ -132,7 +81,7 @@ export default class Chats extends Component {
                     }}
                     style={styles.button}
                   >
-                    <Text>Go to chat</Text>
+                    <Text style={styles.infotext}>{item.name}</Text>
                   </TouchableOpacity>
                 </View>
               );

@@ -45,43 +45,24 @@ export default class Adduser extends Component {
     )
       .then(async (response) => {
         if (response.status == 200) {
+          toast.show("Added Contact to Chat", {type: "success"} )
           console.log("OK");
-        } else if (response.status == 401) {
+        }else if (response.status == 400) {
+          toast.show("Bad Request", {type: "danger"} )
+          console.log("Bad Request");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
           console.log("Unauthorized");
-        } else {
-          throw "something went wrong";
-        }
-      })
-
-      .catch((error) => {
-        this.setState({ error: error });
-        this.setState({ submitted: false });
-      });
-  };
-
-  Removeuserfromchat = async (CID) => {
-    console.log("Removed user from chat");
-    return fetch(
-      "http://localhost:3333/api/1.0.0/chat/" +
-        this.state.chat_id +
-        "/user/" +
-        CID,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "X-authorization": await AsyncStorage.getItem(
-            "whatsthat_session_token"
-          ),
-        },
-      }
-    )
-      .then(async (response) => {
-        if (response.status == 200) {
-          console.log("OK");
-        } else if (response.status == 401) {
-          console.log("Unauthorized");
-        } else {
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger"} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("User Not Found", {type: "danger"} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
           throw "something went wrong";
         }
       })
@@ -102,9 +83,16 @@ export default class Adduser extends Component {
     })
       .then((response) => {
         if (response.status == 200) {
+          console.log("OK")
           return response.json();
-        } else {
-          throw "Something went wrong :(";
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
+          console.log("Unauthorized");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
+          throw "something went wrong";
         }
       })
 
@@ -134,23 +122,25 @@ export default class Adduser extends Component {
   render() {
     return (
       <View>
-        <Text>Contacts:</Text>
+        <Text style={styles.infotext}>Contacts:</Text>
         <FlatList
           data={this.state.contacts}
           renderItem={({ item }) => {
             return (
-              <View>
-                <Text>{item.first_name}</Text>
-                <Text>{item.last_name}</Text>
-                <Text>{item.email}</Text>
-                <Text>{item.user_id}</Text>
+              <View
+              style={styles.messagestyle}
+              >
+                <Text style={styles.infotext}>{item.first_name}</Text>
+                <Text style={styles.infotext}>{item.last_name}</Text>
+                <Text style={styles.infotext}>{item.email}</Text>
+                <Text style={styles.infotext}>{item.user_id}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     this.addContacttoChat(item.user_id);
                   }}
                   style={styles.button}
                 >
-                  <Text>Add User To Chat</Text>
+                  <Text style={styles.infotext}>Add User To Chat</Text>
                 </TouchableOpacity>
               </View>
             );

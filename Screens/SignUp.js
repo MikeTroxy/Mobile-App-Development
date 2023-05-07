@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, TextInput, View, Button, Alert, Touchable } from 'react-native';
 import { TouchableOpacity } from 'react-native-web';
 import styles from './Stylesheet.js';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ export default class SignUp extends Component {
 
   //Method for adding a user in the API
 
-  AddUser(){
+  async AddUser(){
     return fetch("http://localhost:3333/api/1.0.0/user",
     {
       method: 'POST',
@@ -30,8 +31,19 @@ export default class SignUp extends Component {
         "password": this.state.password
       })
     })
-    .then((response) => {
-      alert("Item Added!");
+    .then(async (response) => {
+      if (response.status == 201) {
+        toast.show("Sign Up Successful! Welcome", {type: "success"} )
+        console.log("Created");
+      }else if (response.status == 400) {
+        toast.show("Bad Request", {type: "danger"} )
+        console.log("Bad Request");
+      }else if (response.status == 500) {
+        toast.show("Server Error", {type: "danger"} )
+        console.log("Server Error");
+      }else {
+        throw "something went wrong";
+      }
     })
     .catch((error) => {
       console.error(error);

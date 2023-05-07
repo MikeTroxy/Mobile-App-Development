@@ -29,42 +29,18 @@ export default class Homescreen2 extends Component {
           await AsyncStorage.removeItem("whatsthat_session_token");
           await AsyncStorage.removeItem("whatsthat_user_id");
           this.props.navigation.navigate("Login");
+          toast.show("Logged Out", {type: "Success"} )
         } else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
           console.log("Unauthorized");
           await AsyncStorage.removeItem("whatsthat_session_token");
           await AsyncStorage.removeItem("whatsthat_user_id");
           this.props.navigation.navigate("Login");
-        } else {
-          throw "something went wrong";
-        }
-      })
-
-      .catch((error) => {
-        this.setState({ error: error });
-        this.setState({ submitted: false });
-      });
-  }
-
-  async Createchat() {
-    console.log("Create chat");
-    return fetch("http://localhost:3333/api/1.0.0/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-authorization": await AsyncStorage.getItem(
-          "whatsthat_session_token"
-        ),
-      },
-      body: JSON.stringify({
-        name: "testtest",
-      }),
-    })
-      .then(async (response) => {
-        if (response.status == 200) {
-          console.log("OK");
-        } else if (response.status == 401) {
-          console.log("Unauthorized");
-        } else {
+        }else if (response.json == 500){
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error")
+        }else {
+          toast.show("Something went wrong", {type: "danger"} )
           throw "something went wrong";
         }
       })

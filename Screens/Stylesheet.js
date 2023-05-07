@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
         border: "2px solid #3764c4",
         borderRadius: "12px",
         padding: "5px",
-        backgroundColor: "#e6e3e3"
+        backgroundColor: "#e6e3e3",
+        marginBottom: 10
     },
 
     messagetext: {
@@ -33,10 +34,12 @@ const styles = StyleSheet.create({
     sendbutton: {
         margin: 15,
         backgroundColor: '#3764c4',
-        alignItems: 'right',
+        position: 'relative',
         border: "2px solid #3764c4",
         borderRadius: "12px",
         padding: "5px",
+        alignSelf: 'flex-end',
+        right: 0,
     },
 
     textinput: {
@@ -50,12 +53,34 @@ const styles = StyleSheet.create({
     infotext: {
         fontSize: 20,
         margin: 3
-    }
+    },
 
 
+    sendmessage: {
+        fontSize: 20,
+        margin: 15,
+        border: "2px solid black",
+        borderRadius: "12px",
+        padding: "5px",
+        width: 275,
+        alignSelf: 'flex-start',
+    },
 
+    image: {
+        width: 400,
+        height: 400
+    },
 
-
+    container: {
+        flex: 1
+    },
+    
+    buttonContainer: {
+        alignSelf: 'flex-end',
+        padding: 5,
+        margin: 5,
+        backgroundColor: 'steelblue'
+    },
 })
 
 export default styles;

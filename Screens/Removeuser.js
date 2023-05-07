@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FlatList } from "react-native-web";
 import styles from "./Stylesheet";
 
+
 export default class Removeuser extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +24,7 @@ export default class Removeuser extends Component {
       userid: "",
       contacts: "",
       loading: false,
+      chat_data: [],
     };
   }
 
@@ -45,10 +47,21 @@ export default class Removeuser extends Component {
     )
       .then(async (response) => {
         if (response.status == 200) {
+          toast.show("User Removed", {type: "success",duration: 4000}  )
           console.log("OK");
-        } else if (response.status == 401) {
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger",duration: 4000} )
           console.log("Unauthorized");
-        } else {
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger",duration: 4000} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("Chat Not Found", {type: "danger",duration: 4000} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger",duration: 4000} )
+          console.log("Server Error");
+        }else {
           throw "something went wrong";
         }
       })
@@ -59,8 +72,9 @@ export default class Removeuser extends Component {
       });
   };
 
-  async getContactData() {
-    return fetch("http://localhost:3333/api/1.0.0/contacts", {
+  async getChatData() {
+    console.log(this.state.chat_id);
+    return fetch("http://localhost:3333/api/1.0.0/chat/" + this.state.chat_id, {
       headers: {
         "X-Authorization": await AsyncStorage.getItem(
           "whatsthat_session_token"
@@ -69,17 +83,35 @@ export default class Removeuser extends Component {
     })
       .then((response) => {
         if (response.status == 200) {
-          return response.json();
-        } else {
-          throw "Something went wrong :(";
+          toast.show("OK", {type: "success"} )
+          console.log("OK");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
+          console.log("Unauthorized");
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger"} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("Chat Not Found", {type: "danger"} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
+          throw "something went wrong";
         }
       })
 
       .then((rJson) => {
-        this.setState({
-          contacts: rJson,
-          loading: false,
-        });
+        this.setState(
+          {
+            chat_data: rJson,
+            loading: false,
+          },
+          () => {
+            console.log(this.state.chat_data);
+          }
+        );
       })
 
       .catch((err) => {
@@ -93,7 +125,7 @@ export default class Removeuser extends Component {
         chat_id: this.props.route.params.data.toString(),
       },
       () => {
-        this.getContactData();
+        this.getChatData();
       }
     );
   }
@@ -101,23 +133,22 @@ export default class Removeuser extends Component {
   render() {
     return (
       <View>
-        <Text>Contacts:</Text>
         <FlatList
-          data={this.state.contacts}
+          data={this.state.chat_data.members}
           renderItem={({ item }) => {
             return (
-              <View>
-                <Text>{item.first_name}</Text>
-                <Text>{item.last_name}</Text>
-                <Text>{item.email}</Text>
-                <Text>{item.user_id}</Text>
+              <View style={styles.messagestyle}>
+                <Text style={styles.infotext}>{item.first_name}</Text>
+                <Text style={styles.infotext}>{item.last_name}</Text>
+                <Text style={styles.infotext}>{item.email}</Text>
+                <Text style={styles.infotext}>{item.user_id}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     this.Removeuserfromchat(item.user_id);
                   }}
                   style={styles.button}
                 >
-                  <Text>Remove</Text>
+                  <Text style={styles.infotext}>Remove</Text>
                 </TouchableOpacity>
               </View>
             );

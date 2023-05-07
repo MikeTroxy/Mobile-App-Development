@@ -43,9 +43,25 @@ export default class Editchat extends Component {
     )
       .then((response) => {
         if (response.status == 200) {
-          console.log("Message Updated Successfully");
-        } else {
-          throw "Something went wrong :(";
+          toast.show("Edit Successful!", {type: "success"} )
+          console.log("OK");
+        }else if (response.status == 400) {
+          toast.show("Bad Request", {type: "danger"} )
+          console.log("Bad Request");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
+          console.log("Unauthorized");
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger"} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("Message Not Found", {type: "danger"} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
+          throw "something went wrong";
         }
       })
       .catch((err) => {

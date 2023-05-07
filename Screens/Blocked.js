@@ -32,9 +32,16 @@ export default class Blocked extends Component {
     })
       .then((response) => {
         if (response.status == 200) {
+          console.log("OK")
           return response.json();
-        } else {
-          throw "Something went wrong :(";
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger", duration: 4000} )
+          console.log("Unauthorized");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
+          throw "something went wrong";
         }
       })
 
@@ -63,10 +70,21 @@ export default class Blocked extends Component {
     })
       .then(async (response) => {
         if (response.status == 200) {
+          toast.show("User Unblocked", {type: "success",duration: 4000}  )
           console.log("OK");
-        } else if (response.status == 401) {
+        }else if (response.status == 400) {
+          toast.show("You can't block yourself", {type: "danger",duration: 4000} )
+          console.log("You can't block yourself");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger",duration: 4000} )
           console.log("Unauthorized");
-        } else {
+        }else if (response.status == 404) {
+          toast.show("Contact Not Found", {type: "danger",duration: 4000} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger",duration: 4000} )
+          console.log("Server Error");
+        }else {
           throw "something went wrong";
         }
       })
@@ -84,23 +102,25 @@ export default class Blocked extends Component {
   render() {
     return (
       <View>
-        <Text>Blocked Contacts:</Text>
+        <Text style={styles.infotext}>Blocked Contacts:</Text>
         <FlatList
           data={this.state.contacts}
           renderItem={({ item }) => {
             return (
-              <View>
-                <Text>{item.first_name}</Text>
-                <Text>{item.last_name}</Text>
-                <Text>{item.email}</Text>
-                <Text>{item.user_id}</Text>
+              <View
+              style={styles.messagestyle}
+              >
+                <Text style={styles.infotext}>{item.first_name}</Text>
+                <Text style={styles.infotext}>{item.last_name}</Text>
+                <Text style={styles.infotext}>{item.email}</Text>
+                <Text style={styles.infotext}>{item.user_id}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     this.unblockContact(item.user_id);
                   }}
                   style={styles.button}
                 >
-                  <Text>Unblock Contact</Text>
+                  <Text style={styles.infotext}>Unblock Contact</Text>
                 </TouchableOpacity>
               </View>
             );

@@ -30,10 +30,13 @@ export default class LoginScreen extends Component {
     })
       .then((response) => {
         if (response.status == 200) {
+          toast.show("Welcome Back!", {type: "success"} )
           return response.json();
         } else if (response.status == 400) {
+          toast.show("Invalid email/password supplied", {type: "danger"} )
           throw "Invalid email/password supplied";
         } else {
+          toast.show("Server Error", {type: "danger"})
           throw "Server Error";
         }
       })

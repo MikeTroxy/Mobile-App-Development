@@ -34,9 +34,22 @@ export default class Conversation extends Component {
     })
       .then((response) => {
         if (response.status == 200) {
-          return response.json();
-        } else {
-          throw "Something went wrong :(";
+          toast.show("OK", {type: "success"} )
+          console.log("OK");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
+          console.log("Unauthorized");
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger"} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("Chat Not Found", {type: "danger"} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
+          throw "something went wrong";
         }
       })
 
@@ -57,39 +70,6 @@ export default class Conversation extends Component {
       });
   }
 
-  UpdateChat = async (ID) => {
-    console.log("Chat Updated");
-    return fetch("http://localhost:3333/api/1.0.0/chat/" + ID, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "X-authorization": await AsyncStorage.getItem(
-          "whatsthat_session_token"
-        ),
-      },
-    })
-      .then(async (response) => {
-        if (response.status == 200) {
-          console.log("OK");
-        } else if (response.status == 401) {
-          console.log("Unauthorized");
-        } else if (response.status == 403) {
-          console.log("Forbidden");
-        } else if (response.status == 404) {
-          console.log("Not Found");
-        } else if (response.status == 500) {
-          console.log("Server Error");
-        } else {
-          throw "something went wrong";
-        }
-      })
-
-      .catch((error) => {
-        this.setState({ error: error });
-        this.setState({ submitted: false });
-      });
-  };
-
   async Sendmessage() {
     return fetch(
       "http://localhost:3333/api/1.0.0/chat/" + this.state.chat_id + "/message",
@@ -106,7 +86,25 @@ export default class Conversation extends Component {
     )
       .then((response) => {
         if (response.status == 200) {
-          console.log("Message Sent");
+          toast.show("Message Sent!", {type: "success"} )
+          console.log("OK");
+        }else if (response.status == 400) {
+          toast.show("Bad Request", {type: "danger"} )
+          console.log("Bad Request");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
+          console.log("Unauthorized");
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger"} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("Message Not Found", {type: "danger"} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
+          throw "something went wrong";
         }
       })
       .catch((err) => {
@@ -133,10 +131,21 @@ export default class Conversation extends Component {
     )
       .then(async (response) => {
         if (response.status == 200) {
+          toast.show("Message Deleted!", {type: "success"} )
           console.log("OK");
-        } else if (response.status == 401) {
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
           console.log("Unauthorized");
-        } else {
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger"} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("Message Not Found", {type: "danger"} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
           throw "something went wrong";
         }
       })
@@ -168,22 +177,34 @@ export default class Conversation extends Component {
     } else {
       return (
         <View>
-          <Text style={styles.text}>{this.state.chat_data.name}</Text>
+          <Text style={styles.tittletext}>{this.state.chat_data.name}</Text>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate("Editchat", {
+                data: this.state.chat_id,
+              })
+            }
+            style={styles.button}
+          >
+            <Text style={styles.infotext}>Edit</Text>
+          </TouchableOpacity>
           <FlatList
-            extraData={this.state.chat_data.messages.reverse()}
-            data={this.state.chat_data.messages.reverse()}
+            data={this.state.chat_data.messages}
+            inverted = {true}
+            extraData={this.state.chat_data.messages}
             renderItem={({ item }) => {
               return (
-                <View>
-                  <Text style={ styles.messagestyle }>
+                <View style={ styles.messagestyle }>
+                  <Text style={styles.infotext}>
                     {item.author.first_name}: {item.message}
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
                       this.Deletemessage(item.message_id);
                     }}
+                    style={styles.button}
                   >
-                    <Text style={styles.text}>Remove</Text>
+                    <Text style={styles.infotext}>Delete</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() =>
@@ -194,29 +215,30 @@ export default class Conversation extends Component {
                     }
                     style={styles.button}
                   >
-                    <Text style={styles.text}>Edit</Text>
+                    <Text style={styles.infotext}>Edit</Text>
                   </TouchableOpacity>
                 </View>
               );
             }}
             keyExtractor={(item) => item.chat_id}
           />
+          <View style = {{flexDirection: "row"}}>
           <TextInput
             placeholder="..."
             onChangeText={this.handleMessage}
             value={this.state.message}
-            style={styles.textinput}
+            style={[styles.sendmessage, {flex: 2}]}
           />
 
           <TouchableOpacity
             onPress={() => {
               this.Sendmessage();
             }}
-            style={styles.sendbutton}
+            style={[styles.sendbutton, {flex: 1}]}
           >
-            <Text style={styles.text}>Send Message</Text>
+            <Text style={styles.infotext}>Send</Text>
           </TouchableOpacity>
-
+          </View>
           <TouchableOpacity
             onPress={() =>
               this.props.navigation.navigate("Editchat", {
@@ -225,7 +247,7 @@ export default class Conversation extends Component {
             }
             style={styles.button}
           >
-            <Text style={styles.text}>Edit chat</Text>
+            <Text style={styles.infotext}>Edit chat</Text>
           </TouchableOpacity>
         </View>
       );

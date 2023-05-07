@@ -40,8 +40,17 @@ export default class Search extends Component {
       .then((response) => {
         if (response.status == 200) {
           return response.json();
-        } else {
-          throw "Something went wrong :(";
+        }else if (response.status == 400) {
+          toast.show("Bad Request", {type: "danger"} )
+          console.log("Bad Request");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
+          console.log("Unauthorized");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
+          throw "something went wrong";
         }
       })
       .then((rJson) => {
@@ -72,11 +81,24 @@ export default class Search extends Component {
     })
       .then(async (response) => {
         if (response.status == 200) {
-          
-            console.log("OK")
-        } else if (response.status == 401) {
+          toast.show("Contact Added", {type: "success"} )
+          console.log("OK");
+        }else if (response.status == 400) {
+          toast.show("You can't add yourself as a contact", {type: "danger"} )
+          console.log("You can't add yourself as a contact");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
           console.log("Unauthorized");
-        } else {
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger"} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("Contact Not Found", {type: "danger"} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
           throw "something went wrong";
         }
       })
@@ -87,32 +109,6 @@ export default class Search extends Component {
       });
   }
 
-  blockContact = async (ID) => {
-    console.log("block Contact");
-    return fetch("http://localhost:3333/api/1.0.0/user/" + ID + "/block", {
-      method: "POST",
-      headers: { 'Content-Type': 'application/json',
-        "X-authorization": await AsyncStorage.getItem(
-          "whatsthat_session_token"
-        )
-      }
-    })
-      .then(async (response) => {
-        if (response.status == 200) {
-          
-            console.log("OK")
-        } else if (response.status == 401) {
-          console.log("Unauthorized");
-        } else {
-          throw "something went wrong";
-        }
-      })
-
-      .catch((error) => {
-        this.setState({ error: error });
-        this.setState({ submitted: false });
-      });
-  }
 
   handleSearch = (text) => {
     this.setState({ search: text });
@@ -161,12 +157,6 @@ export default class Search extends Component {
                   style = {styles.button}
                   >
                     <Text>Add Contact</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                  onPress={() => {this.blockContact(item.user_id)}}
-                  style = {styles.button}
-                  >
-                    <Text>Block</Text>
                   </TouchableOpacity>
                 </View>
               )

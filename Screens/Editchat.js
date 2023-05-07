@@ -32,9 +32,22 @@ export default class Editchat extends Component {
     })
       .then((response) => {
         if (response.status == 200) {
-          return response.json();
-        } else {
-          throw "Something went wrong :(";
+          toast.show("OK", {type: "success"} )
+          console.log("OK");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
+          console.log("Unauthorized");
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger"} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("Chat Not Found", {type: "danger"} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
+          throw "something went wrong";
         }
       })
 
@@ -69,9 +82,25 @@ export default class Editchat extends Component {
     })
       .then((response) => {
         if (response.status == 200) {
-          console.log("Chat Name Updated Successfully");
-        } else {
-          throw "Something went wrong :(";
+          toast.show("Chat name updated successfully!", {type: "success"} )
+          console.log("OK");
+        }else if (response.status == 400) {
+          toast.show("Bad Request", {type: "danger"} )
+          console.log("Bad Request");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
+          console.log("Unauthorized");
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger"} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("Chat Not Found", {type: "danger"} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
+          throw "something went wrong";
         }
       })
       .catch((err) => {
@@ -100,13 +129,13 @@ export default class Editchat extends Component {
     } else {
       return (
         <View>
-          <Text style={styles.text}>{this.state.chat_data.name}</Text>
+          <Text style={styles.tittletext}>{this.state.chat_data.name}</Text>
 
           <TextInput
             placeholder="..."
             onChangeText={this.handleChatname}
             value={this.state.message}
-            style={styles.text}
+            style={styles.textinput}
           />
 
           <TouchableOpacity

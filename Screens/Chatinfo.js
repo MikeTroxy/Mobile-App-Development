@@ -33,9 +33,22 @@ export default class Chatinfo extends Component {
     })
       .then((response) => {
         if (response.status == 200) {
-          return response.json();
-        } else {
-          throw "Something went wrong :(";
+          toast.show("OK", {type: "success"} )
+          console.log("OK");
+        }else if (response.status == 401) {
+          toast.show("You don't have permission to do that", {type: "danger"} )
+          console.log("Unauthorized");
+        }else if (response.status == 403) {
+          toast.show("Action Not Allowed", {type: "danger"} )
+          console.log("Forbidden");
+        }else if (response.status == 404) {
+          toast.show("Chat Not Found", {type: "danger"} )
+          console.log("Not Found");
+        }else if (response.status == 500) {
+          toast.show("Server Error", {type: "danger"} )
+          console.log("Server Error");
+        }else {
+          throw "something went wrong";
         }
       })
 
@@ -73,37 +86,25 @@ export default class Chatinfo extends Component {
     } else {
       return (
         <View>
-          <Text style={styles.text}>{this.state.chat_data.name}</Text>
-          <Text> Creator: </Text>
-          <Text styles={styles.text}>
+          <Text style={styles.tittletext}>{this.state.chat_data.name}</Text>
+          <Text style={styles.tittletext}>Creator: </Text>
+          <View style={styles.messagestyle}>
+          <Text style={styles.infotext}>
             {this.state.chat_data.creator.first_name}
           </Text>
-          <Text styles={styles.text}>
+          <Text style={styles.infotext}>
             {this.state.chat_data.creator.last_name}
           </Text>
-          <Text styles={styles.text}>{this.state.chat_data.creator.email}</Text>
-          <Text>Members</Text>
+          <Text style={styles.infotext}>{this.state.chat_data.creator.email}</Text>
+          </View>
+          <Text style={styles.tittletext}>Members:</Text>
           <FlatList 
             data={this.state.chat_data.members}
             renderItem={({ item }) => {
               return (
-                <View>
-                  <Text>Memebers: </Text>
-                  <Text>First Name</Text>
-                  <Text> {item.first_name}</Text>
-                  <Text>Last Name</Text>
-                  <Text> {item.last_name}</Text>
-                </View>
-              );
-            }}
-            keyExtractor={(item) => item.chat_id}
-          />
-          <FlatList 
-            data={this.state.chat_data.messages}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <Text>{item.author.first_name}: {item.message}</Text>
+                <View style={styles.messagestyle}>
+                  <Text style={styles.infotext}>First Name: {item.first_name}</Text>
+                  <Text style={styles.infotext}>Last Name:  {item.last_name}</Text>
                 </View>
               );
             }}
