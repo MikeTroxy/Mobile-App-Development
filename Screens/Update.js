@@ -61,8 +61,21 @@ export default class Update extends Component {
         })
         .then((response) => {
             if(response.status == 200){
+              toast.show("User info Updated Successfully", {type: "success", duration: 4000} )
               console.log("User info Updated Successfully")
-            }else{
+            }else if (response.status == 401) {
+                toast.show("You don't have permission to do that", {type: "danger", duration: 4000} )
+                console.log("Unauthorized");
+              }else if (response.status == 403) {
+                toast.show("Forbidden", {type: "danger", duration: 4000} )
+                console.log("Forbidden");
+              }else if (response.status == 404) {
+                toast.show("Photo not found", {type: "danger", duration: 4000} )
+                console.log("Not found");
+              }else if (response.status == 500) {
+                toast.show("Server Error", {type: "danger"} )
+                console.log("Server Error");
+              }else{
               throw "Something went wrong :("
             }
         })

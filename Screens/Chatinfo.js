@@ -34,6 +34,7 @@ export default class Chatinfo extends Component {
       .then((response) => {
         if (response.status == 200) {
           toast.show("OK", {type: "success"} )
+          return response.json();
           console.log("OK");
         }else if (response.status == 401) {
           toast.show("You don't have permission to do that", {type: "danger"} )

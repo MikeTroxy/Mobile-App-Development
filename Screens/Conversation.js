@@ -35,6 +35,7 @@ export default class Conversation extends Component {
       .then((response) => {
         if (response.status == 200) {
           toast.show("OK", {type: "success"} )
+          return response.json();
           console.log("OK");
         }else if (response.status == 401) {
           toast.show("You don't have permission to do that", {type: "danger"} )
@@ -239,16 +240,6 @@ export default class Conversation extends Component {
             <Text style={styles.infotext}>Send</Text>
           </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate("Editchat", {
-                data: this.state.chat_id,
-              })
-            }
-            style={styles.button}
-          >
-            <Text style={styles.infotext}>Edit chat</Text>
-          </TouchableOpacity>
         </View>
       );
     }

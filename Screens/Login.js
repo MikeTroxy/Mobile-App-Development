@@ -10,8 +10,6 @@ export default class LoginScreen extends Component {
     this.state = {
       email: "",
       password: "",
-      emailtest: "miketroxy@gmail.com",
-      passwordtest: "Mike123!",
     };
   }
 
@@ -24,8 +22,8 @@ export default class LoginScreen extends Component {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: this.state.emailtest,
-        password: this.state.passwordtest,
+        email: this.state.email,
+        password: this.state.password,
       }),
     })
       .then((response) => {

@@ -59,6 +59,7 @@ export default class Profile extends Component {
     .then((response) => {
       if (response.status == 200) {
         console.log("OK")
+        return response.blob();
       }else if (response.status == 401) {
         toast.show("You don't have permission to do that", {type: "danger", duration: 4000} )
         console.log("Unauthorized");
@@ -73,9 +74,6 @@ export default class Profile extends Component {
       }
     })
 
-    .then((res) => {
-      return res.blob();
-    })
     .then((resBlob) => {
       let data = URL.createObjectURL(resBlob)
       this.setState({

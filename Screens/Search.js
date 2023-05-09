@@ -156,7 +156,7 @@ export default class Search extends Component {
                   onPress={() => {this.addContact(item.user_id)}}
                   style = {styles.button}
                   >
-                    <Text>Add Contact</Text>
+                    <Text style={styles.infotext}>Add Contact</Text>
                   </TouchableOpacity>
                 </View>
               )
